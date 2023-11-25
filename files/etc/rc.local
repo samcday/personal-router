@@ -1,1 +1,15 @@
 set -uexo pipefail
+
+# temp: log interesting hotplug events
+cat << "EOF" > /etc/hotplug.d/iface/00-logger
+logger -t hotplug.iface $(env)
+EOF
+cat << "EOF" > /etc/hotplug.d/net/00-logger
+logger -t hotplug.net $(env)
+EOF
+cat << "EOF" > /etc/hotplug.d/neigh/00-logger
+logger -t hotplug.neigh $(env)
+EOF
+cat << "EOF" > /etc/hotplug.d/usb/00-logger
+logger -t hotplug.usb $(env)
+EOF

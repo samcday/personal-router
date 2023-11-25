@@ -9,7 +9,7 @@ set -uexo pipefail
 
 # Misc bits of config
 export IPADDR="${IPADDR:-172.22.2.1}"
-export HOSTNAME="${HOSTNAME:-personal-router}"
+export NAME="${NAME:-personal-router}"
 export TZ="${TZ:-Europe/Berlin}"
 
 if [[ ! -f _build/.setup ]]; then
@@ -30,7 +30,7 @@ cat > _build/files/etc/uci-defaults/system <<HERE
 set -uexo pipefail
 uci -q batch <<EOI
 set system.@system[0].zonename='${TZ}'
-set system.@system[0].hostname='${HOSTNAME}'
+set system.@system[0].hostname='${NAME}'
 commit system
 set network.lan.ipaddr='${IPADDR}'
 commit network
