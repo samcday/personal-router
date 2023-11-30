@@ -2,15 +2,19 @@
 cd "$(dirname "$0")"
 set -uexo pipefail
 
+export TARGET=${TARGET:-ipq40xx/generic}
+export PROFILE=${PROFILE:-avm_fritzbox-4040}
+
 # Misc bits of config
 export IPADDR="${IPADDR:-172.22.2.1}"
 export TZ="${TZ:-Europe/Berlin}"
 
-if [[ ! -f _build/.setup ]]; then
-  mkdir -p _build/
-  curl -s --retry 2 --fail -L https://downloads.openwrt.org/releases/23.05.2/targets/ipq40xx/generic/openwrt-imagebuilder-23.05.2-ipq40xx-generic.Linux-x86_64.tar.xz | \
-    tar --strip-components=1 -C _build/ -Jxvf -
-  touch _build/.setup
+if [[ ! -f _build/${TARGET}/.setup ]]; then
+  mkdir -p _build/${TARGET}
+
+  curl -s --retry 2 --fail -L https://downloads.openwrt.org/releases/23.05.2/targets/${TARGET}/openwrt-imagebuilder-23.05.2-${TARGET//\//-}.Linux-x86_64.tar.xz | \
+    tar --strip-components=1 -C _build/${TARGET} -Jxvf -
+  touch _build/${TARGET}/.setup
 fi
 
 if [[ ! -d _build/petname ]]; then
@@ -62,13 +66,12 @@ HERE
 fi
 
 # imagebuilder settings
-export BIN_DIR="."
-export FILES="files"
+export BIN_DIR="`pwd`"
+export FILES="`pwd`/files"
 export PACKAGES=$(echo $(cat packages))
-export PROFILE=avm_fritzbox-4040
 export DISABLED_SERVICES="dropbear" # using openssh-server instead
 
 (
-  cd _build/
+  cd _build/${TARGET}
   make image PACKAGES="$PACKAGES"
 )
