@@ -1,6 +1,6 @@
 set -uexo pipefail
 
-name=$(petname)
+name=$(cat /etc/hostname || petname)
 
 uci set system.@system[0].hostname="${name}"
 uci commit system

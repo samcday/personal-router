@@ -57,6 +57,9 @@ HERE
 if [[ -n "${WIFI_PASSWORD:-}" ]]; then
   echo -n "${WIFI_PASSWORD}" > _build/files/etc/wifi-pass
 fi
+if [[ -n "${HOSTNAME:-}" ]]; then
+  echo -n "${HOSTNAME}" > _build/files/etc/hostname
+fi
 
 if [[ -n "${ROOT_PW:-}" ]]; then
   cat > _build/files/etc/uci-defaults/root-pw <<HERE
@@ -70,7 +73,7 @@ fi
 
 # imagebuilder settings
 export BIN_DIR="`pwd`"
-export FILES="`pwd`/files"
+export FILES="`pwd`/_build/files"
 export PACKAGES=$(echo $(cat packages))
 export DISABLED_SERVICES="dropbear" # using openssh-server instead
 

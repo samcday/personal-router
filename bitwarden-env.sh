@@ -19,6 +19,7 @@ if [[ "$username" != "root" ]]; then
 fi
 
 cat <<HERE
+export HOSTNAME=$(jq .'[0].name' <<< "$result")
 export ROOT_PW=$(jq '.[0].login.password' <<< "$result")
 export WIFI_PASSWORD=$(jq '.[0].login.password' <<< "$result")
 export IPADDR=$(jq .'[0].login.uris[0].uri' <<< "$result")
