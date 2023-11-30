@@ -2,6 +2,9 @@
 cd "$(dirname "$0")"
 set -uexo pipefail
 
+# TODO: configurable and include in _build/.setup check, mebbe?
+export VERSION=23.05.2
+
 export TARGET=${TARGET:-ipq40xx/generic}
 export PROFILE=${PROFILE:-avm_fritzbox-4040}
 
@@ -12,7 +15,7 @@ export TZ="${TZ:-Europe/Berlin}"
 if [[ ! -f _build/${TARGET}/.setup ]]; then
   mkdir -p _build/${TARGET}
 
-  curl -s --retry 2 --fail -L https://downloads.openwrt.org/releases/23.05.2/targets/${TARGET}/openwrt-imagebuilder-23.05.2-${TARGET//\//-}.Linux-x86_64.tar.xz | \
+  curl -s --retry 2 --fail -L https://downloads.openwrt.org/releases/${VERSION}/targets/${TARGET}/openwrt-imagebuilder-${VERSION}-${TARGET//\//-}.Linux-x86_64.tar.xz | \
     tar --strip-components=1 -C _build/${TARGET} -Jxvf -
   touch _build/${TARGET}/.setup
 fi
@@ -75,3 +78,6 @@ export DISABLED_SERVICES="dropbear" # using openssh-server instead
   cd _build/${TARGET}
   make image PACKAGES="$PACKAGES"
 )
+
+echo done, image location follows
+echo `pwd`/_build/${TARGET}/bin/targets/${TARGET}/openwrt-${VERSION}-${TARGET//\//-}-${PROFILE}-squashfs-sysupgrade.bin
