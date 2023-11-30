@@ -1,0 +1,17 @@
+set -uexo pipefail
+
+name=$(petname)
+
+uci set system.@system[0].hostname="${name}"
+uci commit system
+service system reload || true
+
+uci -q batch <<EOI
+set wireless.@wifi-device[0].disabled='0'
+set wireless.@wifi-device[1].disabled='0'
+set wireless.@wifi-iface[0].ssid="${name}"
+set wireless.@wifi-iface[1].ssid="${name}"
+commit wireless
+EOI
+
+wifi reload || true

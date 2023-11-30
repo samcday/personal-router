@@ -1,10 +1,13 @@
+coreutils-shuf
 curl
 etherwake
+hostapd-utils
 htop
 iptables-nft
 ip6tables-nft
 jq
 kmod-usb-net-cdc-ether
+kmod-usb-net-cdc-ncm
 kmod-usb-net-ipheth
 kmod-usb-net-rndis
 libimobiledevice
@@ -19,3 +22,5 @@ usbmuxd
 usbutils
 screen
 tailscale
+wpad-openssl
+-wpad-basic-mbedtls

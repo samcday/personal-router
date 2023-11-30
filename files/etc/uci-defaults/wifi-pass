@@ -1,0 +1,12 @@
+set -uexo pipefail
+WIFI_PASSWORD=$(cat /etc/wifi-pass || true)
+if [[ -z "${WIFI_PASSWORD:-}" ]]; then
+    WIFI_PASSWORD=$(petname -w 3 -l 5)
+fi
+uci set wireless.@wifi-iface[0].encryption=sae
+uci set wireless.@wifi-iface[1].encryption=sae
+uci set wireless.@wifi-iface[0].key="${WIFI_PASSWORD}"
+uci set wireless.@wifi-iface[1].key="${WIFI_PASSWORD}"
+uci commit wireless
+wifi reload
+rm -f /etc/wifi-pass

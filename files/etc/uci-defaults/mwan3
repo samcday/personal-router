@@ -65,4 +65,4 @@ uci set mwan3.m_cdceth.metric='10'
 
 uci commit mwan3
 
-service mwan3 reload
+service mwan3 reload || true
