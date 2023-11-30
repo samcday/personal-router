@@ -5,6 +5,8 @@ set -ueo pipefail
 # example:
 # $ eval $(./bitwarden-env.sh sam-deskwart)
 
+bw sync >&2
+
 result=$(bw list items --search $1)
 count=$(jq '. | length' <<< "$result")
 if [[ "$count" != "1" ]]; then
